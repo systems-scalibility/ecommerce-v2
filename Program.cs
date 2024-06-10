@@ -1,4 +1,5 @@
 using ecommerce_v1.Db;
+using ecommerce_v1.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,11 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseMySQL(connectionString ?? throw new InvalidOperationException("Connection string is null"));
 });
+
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<SalesOrderItemService>();
+builder.Services.AddScoped<SalesOrderService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

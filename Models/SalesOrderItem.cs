@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ecommerce_v1.Models;
 
+[Table("SalesOrderItem")]
 public class SalesOrderItem
 {
     [Column("Id")] public int SalesOrderItemId { get; set; }
