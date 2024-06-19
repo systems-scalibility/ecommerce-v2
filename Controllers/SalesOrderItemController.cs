@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using ecommerce_v1.Models;
 using ecommerce_v1.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,35 @@ public class SalesOrderItemController(SalesOrderItemService salesOrderItemServic
     {
         var salesOrderItems = await salesOrderItemService.GetAll();
         return Ok(new { salesOrderItems });
+    }
+
+    [HttpGet("product/{codeNumber}")]
+    public async Task<IActionResult> GetAllByCodeNumber(string codeNumber)
+    {
+        var salesOrderItems = await salesOrderItemService.GetAllByCodeNumber(codeNumber);
+        return Ok(new { salesOrderItems });
+    }
+
+    [HttpGet("range-dates")]
+    public async Task<IActionResult> GetAllRangeDates(DateTime startDate, DateTime endDate)
+    {
+        var salesOrderItems = await salesOrderItemService.GetAllRangeDates(startDate, endDate);
+        return Ok(new { salesOrderItems });
+    }
+
+    [HttpGet("quantity/{quantity:int}")]
+    public async Task<IActionResult> GetAllByQuantity(int quantity, string? condition = "=")
+    {
+        Expression<Func<SalesOrderItem, bool>> expression = condition switch
+        {
+            "=" => x => x.Quantity == quantity,
+            ">" => x => x.Quantity > quantity,
+            "<" => x => x.Quantity < quantity,
+            _ => throw new InvalidOperationException("Invalid condition")
+        };
+        var salesOrderItems = await salesOrderItemService.GetAllByQuantity(quantity, expression);
+        var orderItems = salesOrderItems.ToList();
+        return Ok(new { count = orderItems.Count, salesOrderItems = orderItems });
     }
 
     [HttpGet("{id:int}")]

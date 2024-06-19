@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using ecommerce_v1.Db;
 using ecommerce_v1.Models;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,29 @@ public class SalesOrderItemService(AppDbContext context)
     public async Task<IEnumerable<SalesOrderItem?>> GetAll()
     {
         return await context.SalesOrderItems.ToListAsync();
+    }
+
+    public async Task<IEnumerable<SalesOrderItem?>> GetAllByCodeNumber(string? codeNumber)
+    {
+        return await context.SalesOrderItems
+            .Where(x => x.Product!.CodeNumber == codeNumber)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<SalesOrderItem?>> GetAllRangeDates(DateTime startDate, DateTime endDate)
+    {
+        return await context.SalesOrderItems
+            .Where(x => x.DateCreated >= startDate
+                        && x.DateCreated <= endDate)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<SalesOrderItem?>> GetAllByQuantity(int quantity,
+        Expression<Func<SalesOrderItem, bool>> expression)
+    {
+        return await context.SalesOrderItems
+            .Where(expression)
+            .ToListAsync();
     }
 
     public async Task<SalesOrderItem?> GetById(int id)
