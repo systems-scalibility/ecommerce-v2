@@ -1,7 +1,7 @@
-using ecommerce_v1.Models;
+using ecommerce_v2.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ecommerce_v1.Db;
+namespace ecommerce_v2.Db;
 
 public class AppDbContext : DbContext
 {

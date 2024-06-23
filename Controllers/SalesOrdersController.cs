@@ -1,15 +1,15 @@
-using ecommerce_v1.Models;
-using ecommerce_v1.Services;
+using ecommerce_v2.Models;
+using ecommerce_v2.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
-namespace ecommerce_v1.Controllers;
+namespace ecommerce_v2.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class SalesOrderController(SalesOrderService salesOrderService) : ControllerBase
+public class SalesOrdersController(SalesOrderService salesOrderService) : ODataController
 {
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [EnableQuery]
+    public async Task<IActionResult> GetProducts()
     {
         var salesOrders = await salesOrderService.GetAll();
         return Ok(new { salesOrderItems = salesOrders });
@@ -27,14 +27,14 @@ public class SalesOrderController(SalesOrderService salesOrderService) : Control
     public async Task<IActionResult> Add(SalesOrder salesOrder)
     {
         var salesOrderItemCreated = await salesOrderService.Add(salesOrder);
-        return CreatedAtAction(nameof(GetById), new { id = salesOrderItemCreated.SalesOrderId },
+        return CreatedAtAction(nameof(GetById), new { id = salesOrderItemCreated.Id },
             salesOrderItemCreated);
     }
 
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, SalesOrder salesOrder)
     {
-        if (id != salesOrder.SalesOrderId) return BadRequest();
+        if (id != salesOrder.Id) return BadRequest();
         var salesOrderUpdated = await salesOrderService.Update(salesOrder);
         return Ok(salesOrderUpdated);
     }

@@ -1,18 +1,22 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ecommerce_v1.Models;
+namespace ecommerce_v2.Models;
 
 [Table("Product")]
-public class Product
+public class Product : Base
 {
-    [Column("Id")] public int ProductId { get; set; }
-    [Column("ProductName")] public string? Name { get; set; }
-    public string? CodeNumber { get; set; }
-    [Column("ProductDescription")] public string? Description { get; set; }
-    public decimal UnitPrice { get; set; }
-    public Guid RowGuid { get; set; }
-    public DateTime DateCreated { get; set; }
-    public DateTime DateUpdated { get; set; }
+    [StringLength(100)]
+    [Column("ProductName")]
+    public string? Name { get; set; }
 
-    public SalesOrderItem? SalesOrderItem { get; set; }
+    [StringLength(100)] public string? CodeNumber { get; set; }
+
+    [Column("ProductDescription")]
+    [StringLength(255)]
+    public string? Description { get; set; }
+
+    public decimal UnitPrice { get; set; }
+
+    public ICollection<SalesOrderItem>? SalesOrderItems { get; set; }
 }
