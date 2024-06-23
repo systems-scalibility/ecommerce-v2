@@ -8,41 +8,38 @@ namespace ecommerce_v2.Controllers;
 
 public class SalesOrdersController(SalesOrderService salesOrderService) : ODataController
 {
-    [EnableQuery]
-    public async Task<IActionResult> GetProducts()
+    [EnableQuery(PageSize = 10)]
+    public ActionResult<IQueryable> GetSalesOrders()
     {
-        var salesOrders = await salesOrderService.GetAll();
-        return Ok(new { salesOrderItems = salesOrders });
+        var salesOrders = salesOrderService.GetAll();
+        return Ok(salesOrders);
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    [EnableQuery]
+    public async Task<IActionResult> GetSalesOrder([FromRoute] int key)
     {
-        var salesOrder = await salesOrderService.GetById(id);
+        var salesOrder = await salesOrderService.GetById(key);
         if (salesOrder == null) return NotFound();
         return Ok(salesOrder);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Add(SalesOrder salesOrder)
+    public async Task<IActionResult> Posts([FromBody] SalesOrder salesOrder)
     {
         var salesOrderItemCreated = await salesOrderService.Add(salesOrder);
-        return CreatedAtAction(nameof(GetById), new { id = salesOrderItemCreated.Id },
+        return CreatedAtAction(nameof(GetSalesOrder), new { id = salesOrderItemCreated.Id },
             salesOrderItemCreated);
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, SalesOrder salesOrder)
+    public async Task<IActionResult> Put([FromRoute] int key, [FromBody] SalesOrder salesOrder)
     {
-        if (id != salesOrder.Id) return BadRequest();
+        if (key != salesOrder.Id) return BadRequest();
         var salesOrderUpdated = await salesOrderService.Update(salesOrder);
         return Ok(salesOrderUpdated);
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete([FromRoute] int key)
     {
-        await salesOrderService.Delete(id);
+        await salesOrderService.DeleteById(key);
         return NoContent();
     }
 }

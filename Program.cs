@@ -1,8 +1,11 @@
-using ecommerce_v1.Db;
-using ecommerce_v1.Services;
+using ecommerce_v2.Db;
+using ecommerce_v2.Models;
+using ecommerce_v2.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OData.ModelBuilder;
 using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,16 +16,27 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseMySQL(connectionString ?? throw new InvalidOperationException("Connection string is null"));
 });
 
+
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<SalesOrderItemService>();
 builder.Services.AddScoped<SalesOrderService>();
 
-builder.Services.AddControllers();
+var modelBuilder = new ODataConventionModelBuilder();
+modelBuilder.EntitySet<Product>("Products");
+modelBuilder.EntitySet<SalesOrder>("SalesOrders");
+modelBuilder.EntitySet<SalesOrderItem>("SalesOrderItems");
+
+builder.Services.AddControllers()
+    .AddOData(opt =>
+    {
+        opt.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null).EnableQueryFeatures(null).AddRouteComponents(
+            routePrefix: "odata",
+            model: modelBuilder.GetEdmModel()
+        );
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddOcelot();
 
 var app = builder.Build();
 
@@ -36,7 +50,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseRouting();
 app.MapControllers();
 
-await app.UseOcelot(); 
 app.Run();

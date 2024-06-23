@@ -15,26 +15,6 @@ services:
       - ./sql/store_procedures.sql:/docker-entrypoint-initdb.d/b.sql
       - ./sql/insert_data.sql:/docker-entrypoint-initdb.d/c.sql
 
-  apigateway:
-    image: apigateway
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "5000:80"
-    depends_on:
-      - backend-service
-
-  backend-service:
-    image: backend-service
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "5001:80"
-    depends_on:
-      - mysql
-
 volumes:
   db:
     driver: local

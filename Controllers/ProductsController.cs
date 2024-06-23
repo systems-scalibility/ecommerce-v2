@@ -8,36 +8,37 @@ namespace ecommerce_v2.Controllers;
 
 public class ProductsController(ProductService productService) : ODataController
 {
-    [EnableQuery]
+    [EnableQuery(PageSize = 10)]
     public ActionResult<IQueryable> GetProducts()
     {
         var products = productService.GetAll();
         return Ok(products);
     }
 
-    public async Task<IActionResult> GetById(int id)
+    [EnableQuery]
+    public async Task<IActionResult> GetProduct([FromRoute] int key)
     {
-        var product = await productService.GetById(id);
+        var product = await productService.GetById(key);
         if (product == null) return NotFound();
         return Ok(product);
     }
 
-    public async Task<IActionResult> Add(Product product)
+    public async Task<IActionResult> Post([FromBody] Product product)
     {
         var productCreated = await productService.Add(product);
-        return CreatedAtAction(nameof(GetById), new { id = productCreated.Id }, productCreated);
+        return CreatedAtAction(nameof(GetProduct), new { id = productCreated.Id }, productCreated);
     }
 
-    public async Task<IActionResult> Update(int id, Product product)
+    public async Task<IActionResult> Put([FromRoute] int key, [FromBody] Product product)
     {
-        if (id != product.Id) return BadRequest();
+        if (key != product.Id) return BadRequest();
         var productUpdated = await productService.Update(product);
         return Ok(productUpdated);
     }
 
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int key)
     {
-        await productService.DeleteById(id);
+        await productService.DeleteById(key);
         return NoContent();
     }
 }
