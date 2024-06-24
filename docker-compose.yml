@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   mysql:
     image: mysql:latest
@@ -14,6 +12,14 @@ services:
       - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/a.sql
       - ./sql/store_procedures.sql:/docker-entrypoint-initdb.d/b.sql
       - ./sql/insert_data.sql:/docker-entrypoint-initdb.d/c.sql
+  ecommerce-v2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5157:8080"
+    volumes:
+      - "./appsettings.Development.json:/App/appsettings.json"
 
 volumes:
   db:
