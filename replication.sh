@@ -16,7 +16,7 @@ echo "
 [mysqld]
 skip-name-resolve
 default_authentication_plugin = mysql_native_password
-server-id={id}
+server-id=2
 log-bin=mysql-replica-bin
 relay-log=relay-log
 " >> /etc/mysql/my.cnf
