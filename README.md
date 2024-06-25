@@ -40,15 +40,18 @@ mas instancias de la aplicacion ecommerce-v2
 ## Tablas comparativas
 Tabla de comparacion de tiempo de ejecuciones, las implementaciones compardas son la implementacion inicial en monolito y la nueva implementacion en microservicios
 
-| Query Type             |  Implementacion Actual Monolito (ms) | Nueva Implementacion Micro Servicios (ms) |
-|------------------------|-----------------------------|-------------------------|
-| MySQL by CodeNumber    | 44.165                       | 22.110                  |
-| MySQL by Date Range    | 105.583                       | 61.234                  |
-| API by CodeNumber      | 95.123                  | 76.891                  |
-| API by Date Range      | 88.546                   | 68.938                  |
-| API by Quantity        | 72.457                   | 45.166                  |
+| Query Type          | Implementacion Actual Monolito (ms) | Nueva Implementacion Micro Servicios (ms) |
+|---------------------|-------------------------------------|-------------------------------------------|
+| MySQL by CodeNumber | 44.165                              | 22.110                                    |
+| MySQL by Date Range | 105.583                             | 61.234                                    |
+| API by CodeNumber   | 95.123                              | 76.891                                    |
+| API by Date Range   | 88.546                              | 68.938                                    |
+| API by Quantity     | 72.457                              | 45.166                                    |
              |
-
+| API by CodeNumber (1000 requests) | 16s 853 ms                          | 9 seg 263 ms                              |
+| API by Date Range (1000 requests) | none Error                          | 24seg 536 ms                              |
+| API by Quantity    (1000 requests) | 1 m 150 ms                          | 26s 147 ms                                |
+|
 ### Observaciones:
 
 - **Consultas MySQL**: La nueva implementación muestra tiempos de respuesta mejorados.
