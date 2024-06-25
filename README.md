@@ -21,7 +21,22 @@
 ![]()
 
 ## Tablas comparativas
+Tabla de comparacion de tiempo de ejecuciones, las implementaciones compardas son la implementacion inicial en monolito y la nueva implementacion en microservicios
+| Query Type             |  Implementacion Actual Monolito (ms) | Nueva Implementacion Micro Servicios (ms) |
+|------------------------|-----------------------------|-------------------------|
+| MySQL by CodeNumber    | 44.165                       | 22.110                  |
+| MySQL by Date Range    | 105.583                       | 61.234                  |
+| API by CodeNumber      | 95.123                  | 76.891                  |
+| API by Date Range      | 88.546                   | 68.938                  |
+| API by Quantity        | 72.457                   | 45.166                  |
+             |
 
+### Observaciones:
+
+- **Consultas MySQL**: La nueva implementación muestra tiempos de respuesta mejorados.
+
+
+La nueva implementación parece mejorar significativamente los tiempos de consulta de MySQL, y proporciona tiempos de respuesta para las solicitudes API mejoradas 
 ### Lenguaje de programación
 
 C# vs Python
@@ -38,7 +53,28 @@ API Gateway vs Load Balancer
 
 ## Diagrama topológico de los servidores
 
-![]()
+![Diagrama topologico](images/Topography.png)
+
+1.  **Aplicación Cliente**: El usuario interactúa con la aplicación cliente, que podría ser un navegador web, una aplicación móvil u otro tipo de interfaz de usuario.
+    
+2.  **Tráfico**: La solicitud del usuario es enviada desde la aplicación cliente al API Gateway a través de la red.
+    
+3.  **API Gateway**: Este componente actúa como el punto de entrada central para todas las solicitudes de los clientes. El API Gateway maneja las solicitudes, las autentica, y las enruta a los servicios apropiados en la capa de replicación del e-commerce.
+    
+4.  **Balanceador de Carga**: Distribuye las solicitudes entrantes de manera equitativa entre los diferentes servicios del e-commerce para asegurar que ninguno de ellos se sobrecargue y para mejorar la disponibilidad y la escalabilidad del sistema.
+    
+5.  **E-commerce**:
+    
+    -   **Ecommerce-V2 Sales Order Item**: Servicio responsable de manejar los ítems de las órdenes de venta.
+    -   **Ecommerce-V2 Products**: Servicio responsable de manejar la información de los productos.
+    -   **Ecommerce-V2 Sales Order**: Servicio responsable de manejar las órdenes de venta.
+    
+6.  **Replicación de Base de Datos**:
+    
+    -   **Ecommerce-V2 Data Base Replication 1**: Primera réplica de la base de datos del sistema de e-commerce.
+    -   **Ecommerce-V2 Data Base Replication 2**: Segunda réplica de la base de datos del sistema de e-commerce.
+    
+    Estas réplicas aseguran la alta disponibilidad y la redundancia de los datos, permitiendo que las operaciones de lectura y escritura sean distribuidas para mejorar el rendimiento y la resiliencia del sistema.
 
 ## Diagrama de la base de datos
 
