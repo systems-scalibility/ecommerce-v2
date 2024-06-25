@@ -114,6 +114,26 @@ La replicación en MySQL es robusta y fácil de configurar, lo que es crucial pa
 
 API Gateway vs Load Balancer
 
+
+| Característica                      | API Gateway                                              | Load Balancer                                      |
+|-------------------------------------|----------------------------------------------------------|----------------------------------------------------|
+| **Función Principal**               | Gestiona y enruta las solicitudes a microservicios.      | Distribuye el tráfico entre múltiples servidores.  |
+| **Capas de la Aplicación**          | Opera en la capa de aplicación (OSI - capa 7).           | Opera principalmente en la capa de transporte (OSI - capa 4) o la capa de aplicación (OSI - capa 7). |
+| **Gestión de Solicitudes**          | Maneja solicitudes HTTP/HTTPS, autenticación, autorización, transformaciones y agregación de respuestas. | Distribuye solicitudes de red (HTTP/HTTPS, TCP/UDP) entre varios servidores para balancear la carga. |
+| **Seguridad**                       | Proporciona autenticación, autorización, filtrado y protección contra ataques. | Puede proporcionar características básicas de seguridad como SSL/TLS, pero no autenticación y autorización avanzada. |
+| **Transformación de Datos**         | Puede transformar las solicitudes y respuestas (por ejemplo, convertir formatos de datos). | No transforma datos; simplemente enruta solicitudes. |
+| **Manejo de API**                   | Ofrece funcionalidades específicas para la gestión de APIs, como versionado y limitación de tasa. | No tiene funcionalidades específicas para APIs. |
+| **Enrutamiento Avanzado**           | Soporta enrutamiento avanzado basado en contenido, reglas y condiciones específicas de negocio. | Principalmente enruta basándose en el estado del servidor y la disponibilidad. |
+| **Monitorización y Análisis**       | Proporciona métricas detalladas y análisis sobre el uso de APIs y rendimiento. | Ofrece métricas básicas sobre la distribución de carga y el rendimiento del servidor. |
+| **Microservicios**                  | Optimizado para arquitecturas de microservicios, facilitando la comunicación y gestión entre ellos. | Útil para cualquier tipo de arquitectura, no específicamente optimizado para microservicios. |
+| **Integración con Servicios**       | Facilita la integración con servicios externos, autenticación de terceros y agregación de servicios. | No tiene características específicas para la integración de servicios externos. |
+
+### Ejemplo de Uso
+- **API Gateway**: Ideal para arquitecturas de microservicios donde se necesita una gestión centralizada de solicitudes, autenticación, y enrutamiento avanzado.
+- **Load Balancer**: Ideal para distribuir la carga entre múltiples servidores para mejorar la disponibilidad y escalabilidad de la aplicación.
+
+En resumen, los Load Balancers son una herramienta esencial para garantizar que su aplicación pueda manejar cargas de trabajo variables y mantener un alto nivel de rendimiento y disponibilidad por lo que la hace la opcion ideal para el proyecto.
+
 ## Diagrama topológico de los servidores
 
 ![Diagrama topologico](images/Topography.png)
