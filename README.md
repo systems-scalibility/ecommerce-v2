@@ -5,8 +5,8 @@
 - Aplicación de E-commerce
 - Aplicación hecha desde cero que solo cuenta con backend
 - Se tiene dos repositorios:
-  - **v1**: Simboliza la primera version de la aplicación la cual no esta optimizada
-  - **v2**: Simboliza la version mejorada de la aplicación usando escalabilidad
+    - **v1**: Simboliza la primera version de la aplicación la cual no esta optimizada
+    - **v2**: Simboliza la version mejorada de la aplicación usando escalabilidad
 - La aplicación cuenta con la habilidad de auto escalado
 - Carga
 
@@ -18,7 +18,24 @@
 
 ## Diagrama de Arquitectura
 
-![]()
+### Arquitectura Version 1
+
+![Arquitectura version 1](images/arquitecture-v1.png)
+
+La primera arquitectura va enfocada a una aplicacion monolito que usa la arquitectura Onion. Este enfoque de capas busca
+la separacion de responsabilidades y facilita el mantenimiento y evolucion de la aplicacion a largo plazo.
+
+### Arquitectura version 2
+
+![Untitled](images/architecture-v2.png)
+
+La arquitectura actual va enfocada a microservicios con un api gateway, el ecommerce-v2 donde
+
+- Api gateway: es el punto de acceso para las solicitudes de los clietnes
+- Ecommerce-v2: es el sistema que ejecuta la logica de negocio este accede a la base de datos y continua usanado la arquitectura Onion
+
+La ventaja de una arquitectura de microservicios es que permite una escalabilidad horizontal permitiendo la creacion de
+mas instancias de la aplicacion ecommerce-v2
 
 ## Tablas comparativas
 Tabla de comparacion de tiempo de ejecuciones, las implementaciones compardas son la implementacion inicial en monolito y la nueva implementacion en microservicios
@@ -128,12 +145,14 @@ API Gateway vs Load Balancer
 ### Tablas
 
 - **Product:** Guarda información básica de un producto
-- **SalesOrderItem:** Guarda información de un producto con la diferencia de que se especifica la cantidad de producto que se quiere
-- **SalesOrder:** Guarda `SalesOrderItems`, puede tener varios `SalesOrderItems` y el conjunto de estos harían una orden.
+- **SalesOrderItem:** Guarda información de un producto con la diferencia de que se especifica la cantidad de producto
+  que se quiere
+- **SalesOrder:** Guarda `SalesOrderItems`, puede tener varios `SalesOrderItems` y el conjunto de estos harían una
+  orden.
 
 ## Tiempos - Mediciones
 
-- 
+-
 
 ## Optimizaciones
 
@@ -149,15 +168,26 @@ Base de datos la cual cargaba los siguientes datos:
 
 **Segunda version**
 
-Para la segunda version se aplico *Replication* con el tipo de *Master-Slave* la cual nos indica que hay un servidor que es el master y otras que son los slave (replicas).
+Para la segunda version se aplico *Replication* con el tipo de *Master-Slave* la cual nos indica que hay un servidor que
+es el master y otras que son los slave (replicas).
 
 Las razones por las que aplicamos replicación son:
 
-- Scaling out: Cuando la mayoría de las operaciones en la base de datos son de lectura, se  puede distribuir las lecturas entre las bases de datos (slave) mientras la principal (master) se mantiene disponible para manejar las escrituras.
-- Analíticas: Se tiene una replica de la base de datos que se encarga de queries lentos lo que permite que no se interrumpa la disponibilidad de la base de datos principal para escribir.
-- Seguridad: Se puede pausar una replica y realizar una copia de seguridad sin temor a que se dañen los datos en la base de datos principal.
+- Scaling out: Cuando la mayoría de las operaciones en la base de datos son de lectura, se puede distribuir las lecturas
+  entre las bases de datos (slave) mientras la principal (master) se mantiene disponible para manejar las escrituras.
+- Analíticas: Se tiene una replica de la base de datos que se encarga de queries lentos lo que permite que no se
+  interrumpa la disponibilidad de la base de datos principal para escribir.
+- Seguridad: Se puede pausar una replica y realizar una copia de seguridad sin temor a que se dañen los datos en la base
+  de datos principal.
 
 ### Código
+**Primera version**
+
+Para el acceso a queries el ecommerce permite realizar petition http, esta api tiene logica definida para cada peticion requerida. Los action son creados para los use cases con logica especifica. Como la arquitectura esta enfocada a Onion cada servicio accede a la base de datos con su propia logica lo conlleva duplicacion de codigo
+
+**Segunda version**
+
+A nivel de codigo en el ecommerce se optimizo la logica para acceder a la base de datos, dado que las llamadas CRUD se repiten. La logica de los action ahora van enfocado a API Rest, con el uso de OData por lo cual no es necesario crear logica especifica para cada use case. Por el api gateway al ser usado como una aplicacion en si permite poder configurar llamados a una o varias instancias del ecommerce
 
 ## Asignación de tareas
 
