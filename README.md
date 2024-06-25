@@ -39,6 +39,7 @@ mas instancias de la aplicacion ecommerce-v2
 
 ## Tablas comparativas
 Tabla de comparacion de tiempo de ejecuciones, las implementaciones compardas son la implementacion inicial en monolito y la nueva implementacion en microservicios
+
 | Query Type             |  Implementacion Actual Monolito (ms) | Nueva Implementacion Micro Servicios (ms) |
 |------------------------|-----------------------------|-------------------------|
 | MySQL by CodeNumber    | 44.165                       | 22.110                  |
