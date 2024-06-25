@@ -50,3 +50,5 @@ for (let i = 0; i < 1000; i++) {
 }
 end = new Date().getTime()
 calculateTime(start, end)
+
+connection.end();
