@@ -8,16 +8,16 @@ const request = axios.create({
 })
 
 const getAllByCodeNumber = async (codeNumber) => {
-    await request.get(`api/SalesOrderItems?$filter=Product/CodeNumber eq '${codeNumber}'&$count=true`)
+    await request.get(`api/SalesOrderItems?$filter=Product/CodeNumber eq '${codeNumber}'`)
 }
 
 const getAllByDate = async (startDate, endDate) => {
     await request
-        .get(`api/SalesOrderItems?$filter=DateCreated ge ${startDate} and DateCreated le ${endDate}&$count=true`)
+        .get(`api/SalesOrderItems?$filter=DateCreated ge ${startDate} and DateCreated le ${endDate}`)
 }
 
 const getAllByQuantity = async (quantity, condition) => {
-    await request.get(`api/SalesOrderItems?$filter=Quantity eq ${quantity}&$count=true`)
+    await request.get(`api/SalesOrderItems?$filter=Quantity eq ${quantity}`)
 }
 
 const calculateTime = (start, end) => {
@@ -38,7 +38,7 @@ calculateTime(start, end)
 console.log('Starting petitions for dates...')
 start = new Date().getTime()
 for (let i = 0; i < 1000; i++) {
-    await getAllByDate('2024-06-25T04:53:17Z', '2024-06-25T04:59:17Z')
+    await getAllByDate('2024-06-25T11:51:45Z', '2024-06-25T11:58:45Z')
 }
 end = new Date().getTime()
 calculateTime(start, end)
@@ -50,5 +50,3 @@ for (let i = 0; i < 1000; i++) {
 }
 end = new Date().getTime()
 calculateTime(start, end)
-
-connection.end();
