@@ -47,11 +47,10 @@ Tabla de comparacion de tiempo de ejecuciones, las implementaciones compardas so
 | API by CodeNumber   | 95.123                              | 76.891                                    |
 | API by Date Range   | 88.546                              | 68.938                                    |
 | API by Quantity     | 72.457                              | 45.166                                    |
-             |
 | API by CodeNumber (1000 requests) | 16s 853 ms                          | 9 seg 263 ms                              |
 | API by Date Range (1000 requests) | none Error                          | 24seg 536 ms                              |
 | API by Quantity    (1000 requests) | 1 m 150 ms                          | 26s 147 ms                                |
-|
+
 ### Observaciones:
 
 - **Consultas MySQL**: La nueva implementación muestra tiempos de respuesta mejorados.
